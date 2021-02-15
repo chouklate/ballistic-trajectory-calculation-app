@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="simulation.js"></script>
+    <script src="draw.js"></script>
+    
+    <link rel="stylesheet" href="style.css">
+    <style>
+        #start-simulation {position:fixed; z-index:3; }
+        canvas { position: absolute;} 
+        #main-canvas { z-index: 2; }
+        #bg-canvas { z-index: 1; }
+    </style>
+    <title>Document</title>
+</head>
+<body onload="initCanvas()" style="background-color: black;">
+    
+    <button id="start-simulation" style="size: 200px 100px; font-size: 100px" onclick ="resetCanvas()">Start!</button>
+    <div id="canvas-parent">
+    <canvas id="bg-canvas" width="5000" height="3000", style="background-color: rgb(30,30,30);" ></canvas>
+    <canvas id="main-canvas" width="5000" height="3000", > Sorry, it seems this content is not supported on your browser. </canvas>
+    </div>
+
+    <div id="bottom-controls-parent">
+
+
+    </div>
+    
+</body>
+</html>
+
+<!--
+    [CONTROLS]
+    create new target
+        ENTRY: new target icon
+    create new launcher
+        ENTRY: new launcher icon
+        click: show V icon -> placement (unfocus-> disappear)
+        click on existing: show X icon -> remove (unfocus-> disappear)
+    
+    edit target
+        ENTRY: default
+        click-drag: change position
+            shift: set pos, now setting velocity
+    
+    [DISPLAY]
+    bottom:
+        btn start/pause
+        slider simulation speed
+        slider gravity
+        
+
+
+    side: launcher data
+        launcher1 : 
+            *slider-velocity
+            output-velocity
+            
+            output-velocity-x
+            output-velocity-y
+
+            *slider-firerate
+            output-firerate
+
+            when click-> focus (highlight)
+
+        btn Add launcher
+
+-->
