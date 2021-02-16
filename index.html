@@ -10,7 +10,8 @@
     <link rel="stylesheet" href="style.css">
     <style>
         #start-simulation {position:fixed; z-index:3; }
-        canvas { position: absolute;} 
+        #fg-overlay {z-index:3};
+        #canvas { position: absolute;} 
         #main-canvas { z-index: 2; }
         #bg-canvas { z-index: 1; }
     </style>
@@ -22,12 +23,21 @@
     <div id="canvas-parent">
     <canvas id="bg-canvas" width="5000" height="3000", style="background-color: rgb(30,30,30);" ></canvas>
     <canvas id="main-canvas" width="5000" height="3000", > Sorry, it seems this content is not supported on your browser. </canvas>
+    <div id="fg-overlay" style="width: 5000; height: 30000; background-color: rgba(20,20,20,0.2); visible: false;"></div>
     </div>
 
     <div id="bottom-controls-parent">
-
-
+        <button id="toggle-simulation" onclick="toggleSimulation()">START</button>
+        <input id="gravity-slider" type="range" min="0" max="2" />
     </div>
+    <input id="sim-speed-slider" type="range" min="0" max="2" /> 
+    <div id="launcher-list-parent">
+        
+    </div>
+    
+    <button onclick="setLauncherCreateMode()">Create New</button>
+    
+    
     
 </body>
 </html>

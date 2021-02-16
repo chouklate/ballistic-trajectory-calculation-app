@@ -25,9 +25,12 @@ function initCanvas()
             {
                 canvas = document.getElementById("main-canvas");
                 bgcanvas = document.getElementById("bg-canvas");
+                fgoverlay = document.getElementById("fg-overlay")
+                e_gravitySlider = document.getElementById("gravity-slider");
+                e_simSpeedSlider = document.getElementById("sim-speed-slider")
                 bgctx = bgcanvas.getContext("2d");
                 ctx = canvas.getContext("2d");
-                canvas.addEventListener("mousedown", e => {mouseDownPos = {x: e.offsetX, y: canvas.height - e.offsetY};resetCanvas()});
+                canvas.addEventListener("mousedown", canvasClick(e))
                 
                 document.addEventListener("keydown", e => {
                     e.preventDefault();
@@ -49,13 +52,15 @@ function initCanvas()
 
                 managerID = setInterval("bulletManager()", 5000/globalParams.FPS);
 
-                scheduleID = setInterval("b()", 1000/globalParams.fireRate);
+                scheduleID = setInterval("fireOnSchedule()", 1000/globalParams.fireRate);
+                
+                fixedUpdateID = 
             }
         }
     }
 }
 
-function b() //debug
+function fireOnSchedule() //debug
 {
     launcherList[3].Fire(omnidirectional = false)
     //i++;
@@ -63,6 +68,9 @@ function b() //debug
 }
 function updateCanvas()
 {
+    globalParams.simulationSpeed = e_simSpeedSlider.value;
+    r = globalParams.simulationSpeed
+    globalParams.gravity = e_gravitySlider.value;
     applyPhysics();
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -86,6 +94,18 @@ function updateCanvas()
 
         
         ctx.drawImage(targetImg, e.pos.x -.5*targetImg.width, canvas.height-e.pos.y -.5*targetImg.height);
+        
+        if(launcherCreationMode)
+        {
+            ctx.drawImage(targetAlphaImg, mousepos.x, mousepos.y )
+        }
+        
+        if(velocitySetMode)
+        {
+            //get mouse delta
+            //blip size
+            //draw arrow
+        }
     })
     
 }

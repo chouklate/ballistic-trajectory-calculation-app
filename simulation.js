@@ -8,11 +8,12 @@ class GameObject
 
 class Launcher extends GameObject
 {
-    constructor(pos, launchVelocity, target)
+    constructor(pos, launchVelocity, target, ID)
     {
         super(pos);
         this.launchVelocity = launchVelocity;
         this.target = target;
+        this.ID = ID;
     }
 
     TransformPoint(targetPos) // converts coords into local space
