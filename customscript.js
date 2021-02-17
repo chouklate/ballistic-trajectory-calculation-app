@@ -33,13 +33,13 @@ var currentLauncherID;
 
 var e_LauncherListParent= document.getElementById('launcher-list-parent');
 
-e_addLauncher.onclick(e=>{
-    if(launcherTable.addLauncher})
+//e_addLauncher.onclick(e=>{
+//    if(launcherTable.addLauncher})
 
-function canvasClick(e)
-{
-    
-    mouseDownPos = {x: e.offsetX, y: canvas.height - e.offsetY};
+//function canvasClick(e)
+//{
+//    
+//    mouseDownPos = {x: e.offsetX, y: canvas.height - e.offsetY};
     if(launcherCreationMode){
         addLauncher();
         launcherCreationMode = false;

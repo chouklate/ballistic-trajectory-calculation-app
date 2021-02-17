@@ -4,7 +4,18 @@ var i = 0;
 
 var mouseDownPos = {x:0, y:2000};
 
+var launcherCreationMode = false;
 
+var velocitySetMode= false;
+
+function d()
+{
+    clearInterval(timerID);
+    clearInterval(managerID);
+    clearInterval(scheduleID);
+    ctx.drawImage(bulletImg, 0,0);
+    ctx.drawImage(bulletImg, canvas.width,canvas.height);
+}
 function initCanvas()
 {
     
@@ -30,15 +41,15 @@ function initCanvas()
                 e_simSpeedSlider = document.getElementById("sim-speed-slider")
                 bgctx = bgcanvas.getContext("2d");
                 ctx = canvas.getContext("2d");
-                canvas.addEventListener("mousedown", canvasClick(e))
+                canvas.addEventListener("mousedown", e => {mouseDownPos = {x: 4.02* e.offsetX, y: (canvas.height - 4.02* e.offsetY)};resetCanvas()}) //canvasClick(e))
                 
                 document.addEventListener("keydown", e => {
                     e.preventDefault();
-                    if(e.key == "a") {targetList[0].velocity.x -= 5}
-                    if(e.key == "d") {targetList[0].velocity.x += 5}
-                    if(e.key == "w") {targetList[0].velocity.y += 9}
-                    if(e.key == "s") {targetList[0].velocity.y -= 5}
-                    console.log(targetList[0].velocity.x)
+                    if(e.key == "a") {if(targetList[0].velocity.x > -50){targetList[0].velocity.x  -= 1}}
+                    if(e.key == "d") {if(targetList[0].velocity.x < 50){targetList[0].velocity.x  += 1}}
+                    if(e.key == "w") {if(targetList[0].velocity.y < 50){targetList[0].velocity.y  += 3}}
+                    if(e.key == "s") {targetList[0].velocity.y -= 2}
+
 
                 });
 
@@ -54,7 +65,7 @@ function initCanvas()
 
                 scheduleID = setInterval("fireOnSchedule()", 1000/globalParams.fireRate);
                 
-                fixedUpdateID = 
+                
             }
         }
     }
@@ -68,9 +79,10 @@ function fireOnSchedule() //debug
 }
 function updateCanvas()
 {
-    globalParams.simulationSpeed = e_simSpeedSlider.value;
-    r = globalParams.simulationSpeed
-    globalParams.gravity = e_gravitySlider.value;
+    console.log("running!");
+    //globalParams.simulationSpeed = e_simSpeedSlider.value;
+    //r = globalParams.simulationSpeed
+    //globalParams.gravity = e_gravitySlider.value;
     applyPhysics();
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -97,7 +109,7 @@ function updateCanvas()
         
         if(launcherCreationMode)
         {
-            ctx.drawImage(targetAlphaImg, mousepos.x, mousepos.y )
+            //ctx.drawImage(targetAlphaImg, mousepos.x, mousepos.y )
         }
         
         if(velocitySetMode)
@@ -147,6 +159,6 @@ function bulletManager()
 function resetCanvas()
 {
     //debug only for now
-    targetList[0].pos = mouseDownPos;
+    targetList[0].pos = JSON.parse(JSON.stringify(mouseDownPos));
     targetList[0].velocity.y = 0;
 }

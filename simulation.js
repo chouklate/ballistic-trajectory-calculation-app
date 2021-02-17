@@ -54,11 +54,11 @@ class Bullet extends GameObject{
 
 var globalParams =
 {
-    gravity: -0.9,
+    gravity: -1.2,
     FPS : 30,
     simulationSpeed: .5, // physics updates every simSpeed * FPS times per second
 
-    fireRate: 10 //debug only, per second
+    fireRate: 7 //debug only, per second
 }
 
 var launcherList = new Array();
@@ -66,9 +66,9 @@ var bulletList = new Array();
 var targetList = new Array();
 
 t = new Target({x:0, y:2000}, {x:30, y:10});
-l1 = new Launcher({x:0, y:0}, 100, t);
-l2 = new Launcher({x:500, y:0}, 100, t);
-l3 = new Launcher({x:1000, y:0}, 100, t);
-l4 = new Launcher({x:2000, y:0}, 100, t);
+l1 = new Launcher({x:0, y:100}, 100, t);
+l2 = new Launcher({x:500, y:100}, 100, t);
+l3 = new Launcher({x:1000, y:100}, 100, t);
+l4 = new Launcher({x:2000, y:100}, 100, t);
 launcherList.push(l1, l2, l3, l4);
 targetList.push(t)

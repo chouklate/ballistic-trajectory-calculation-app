@@ -1,6 +1,45 @@
- .bg-overlay-parent
-{
-    size: 10px;
+#tstart-simulation {
+    position:fixed; 
+    z-index:3; 
 }
 
-.OwO #whats #this{}
+#tfg-overlay {
+    z-index:3
+}
+
+
+.canvas-class {
+    
+
+}
+
+
+#bg-canvas {
+    margin: 0px;
+    position: absolute;
+    width:  inherit;
+    height: inherit;
+
+    z-index: 2;
+    background-color: rgb(30,30,30);
+}
+
+#main-canvas {
+    margin: 0px;
+    position: absolute;
+    width: inherit;
+    height: inherit;
+
+    z-index: 2; 
+    
+}
+
+#fg-overlay {
+    background-color: rgba(22, 142, 172, 0.2); 
+    position: absolute;
+    width: inherit;
+    height: inherit;
+    z-index: 3;
+    display: none;
+
+}
