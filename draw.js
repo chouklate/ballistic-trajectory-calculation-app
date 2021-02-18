@@ -12,8 +12,13 @@ var velocitySetMode= false;
 function toggleSimulation()
 {
     running = !running;
-    if(running){resumeCanvas();}
-    else {stopCanvas();}
+    if(running){resumeCanvas();e_toggleButton.innerHTML = "Stop";
+    e_toggleButton.classList.remove("bg-primary);
+    e_toggleButton.classList.add("bg-danger");}
+    
+    else {stopCanvas();e_toggleButton.innerHTML = "Start"
+        e_toggleButton.classList.remove("bg-danger);
+        e_toggleButton.classList.add("bg-primary");}
 }
 function stopCanvas()
 {
@@ -24,7 +29,6 @@ function stopCanvas()
 
 function resumeCanvas()
 {
-    r = e_simSpeedSlider.value;
     timerID = setInterval("updateCanvas()", 1000/globalParams.FPS);
     managerID = setInterval("bulletManager()", 5000/globalParams.FPS);
     scheduleID = setInterval("fireOnSchedule()", 1000/globalParams.fireRate);
@@ -52,6 +56,7 @@ function initCanvas()
                 fgoverlay = document.getElementById("fg-overlay")
                 e_gravitySlider = document.getElementById("gravity-slider");
                 e_simSpeedSlider = document.getElementById("sim-speed-slider")
+                e_toggleButton = document.getElementById("toggle-simulation");
                 bgctx = bgcanvas.getContext("2d");
                 ctx = canvas.getContext("2d");
                 canvas.addEventListener("mousedown", e => {
@@ -89,9 +94,9 @@ function fireOnSchedule() //debug
 function updateCanvas()
 {
     console.log("running!");
-    //globalParams.simulationSpeed = e_simSpeedSlider.value;
-    //r = globalParams.simulationSpeed
-    //globalParams.gravity = e_gravitySlider.value;
+    globalParams.simulationSpeed = e_simSpeedSlider.value;
+    r = globalParams.simulationSpeed
+    globalParams.gravity = e_gravitySlider.value;
     applyPhysics();
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
