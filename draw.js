@@ -13,11 +13,11 @@ function toggleSimulation()
 {
     running = !running;
     if(running){resumeCanvas();e_toggleButton.innerHTML = "Stop";
-    e_toggleButton.classList.remove("bg-primary);
+    e_toggleButton.classList.remove("bg-primary");
     e_toggleButton.classList.add("bg-danger");}
     
     else {stopCanvas();e_toggleButton.innerHTML = "Start"
-        e_toggleButton.classList.remove("bg-danger);
+        e_toggleButton.classList.remove("bg-danger");
         e_toggleButton.classList.add("bg-primary");}
 }
 function stopCanvas()
