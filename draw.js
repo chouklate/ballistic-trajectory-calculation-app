@@ -1,13 +1,11 @@
 var r = globalParams.simulationSpeed;
-
 var i = 0;
 
 var mouseDownPos = {x:0, y:2000};
-
 var running = false;
 var launcherCreationMode = false;
-
 var velocitySetMode= false;
+
 
 function toggleSimulation()
 {
@@ -16,7 +14,7 @@ function toggleSimulation()
     e_toggleButton.classList.remove("bg-primary");
     e_toggleButton.classList.add("bg-danger");}
     
-    else {stopCanvas();e_toggleButton.innerHTML = "Start"
+    else {stopCanvas();e_toggleButton.innerHTML = "Start";
         e_toggleButton.classList.remove("bg-danger");
         e_toggleButton.classList.add("bg-primary");}
 }
@@ -96,7 +94,7 @@ function updateCanvas()
     console.log("running!");
     globalParams.simulationSpeed = e_simSpeedSlider.value;
     r = globalParams.simulationSpeed
-    globalParams.gravity = e_gravitySlider.value;
+    globalParams.gravity = -e_gravitySlider.value;
     applyPhysics();
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
