@@ -4,17 +4,30 @@ var i = 0;
 
 var mouseDownPos = {x:0, y:2000};
 
+var running = false;
 var launcherCreationMode = false;
 
 var velocitySetMode= false;
 
-function d()
+function toggleSimulation()
+{
+    running = !running;
+    if(running){resumeCanvas();}
+    else {stopCanvas();}
+}
+function stopCanvas()
 {
     clearInterval(timerID);
     clearInterval(managerID);
     clearInterval(scheduleID);
-    ctx.drawImage(bulletImg, 0,0);
-    ctx.drawImage(bulletImg, canvas.width,canvas.height);
+}
+
+function resumeCanvas()
+{
+    r = e_simSpeedSlider.value;
+    timerID = setInterval("updateCanvas()", 1000/globalParams.FPS);
+    managerID = setInterval("bulletManager()", 5000/globalParams.FPS);
+    scheduleID = setInterval("fireOnSchedule()", 1000/globalParams.fireRate);
 }
 function initCanvas()
 {
