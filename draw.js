@@ -74,13 +74,6 @@ function initCanvas()
                 launcherList.forEach(e => {
                     bgctx.drawImage(launcherImg, e.pos.x - .5*launcherImg.width, canvas.height-e.pos.y - .5*launcherImg.height)
                 });
-
-                timerID = setInterval("updateCanvas()", 1000/globalParams.FPS);
-
-                managerID = setInterval("bulletManager()", 5000/globalParams.FPS);
-
-                scheduleID = setInterval("fireOnSchedule()", 1000/globalParams.fireRate);
-                
                 
             }
         }
