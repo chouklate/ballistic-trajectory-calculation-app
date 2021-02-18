@@ -43,8 +43,9 @@ function initCanvas()
                 ctx = canvas.getContext("2d");
                 canvas.addEventListener("mousedown", e => {
                     let rx = canvas.width/canvas.offsetWidth; let ry=canvas.height/canvas.offsetHeight; 
-                    mouseDownPos = {x: e.offsetX*rx, y: (canvas.offsetHeight - e.offsetY)*ry};resetCanvas()}) //canvasClick(e))
-                
+                    mouseDownPos = {x: e.offsetX/rx, y: (canvas.offsetHeight - e.offsetY)/ry};resetCanvas()}) //canvasClick(e))
+         
+     
                 document.addEventListener("keydown", e => {
                     e.preventDefault();
                     if(e.key == "a") {if(targetList[0].velocity.x > -50){targetList[0].velocity.x  -= 1}}
