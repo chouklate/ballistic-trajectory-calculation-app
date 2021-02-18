@@ -41,7 +41,9 @@ function initCanvas()
                 e_simSpeedSlider = document.getElementById("sim-speed-slider")
                 bgctx = bgcanvas.getContext("2d");
                 ctx = canvas.getContext("2d");
-                canvas.addEventListener("mousedown", e => {mouseDownPos = {x: 4.02* e.offsetX, y: (canvas.height - 4.02* e.offsetY)};resetCanvas()}) //canvasClick(e))
+                canvas.addEventListener("mousedown", e => {
+                    let rx = canvas.width/canvas.offsetWidth; let ry=canvas.height/canvas.offsetHeight; 
+                    mouseDownPos = {x: e.offsetX*rx, y: (canvas.offsetHeight - e.offsetY)*ry};resetCanvas()}) //canvasClick(e))
                 
                 document.addEventListener("keydown", e => {
                     e.preventDefault();
