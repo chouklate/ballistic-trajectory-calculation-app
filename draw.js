@@ -58,12 +58,12 @@ function onMouseClick()
 {
     createTargetMode = true;
     nbctx.drawImage(targetImg, mouseDownPos.x - .5*targetImg.width, canvas.height - mouseDownPos.y - .5*targetImg.height);
-    canvas.addEventListener("mouseup", createNewBullet);
+    canvas.addEventListener("mouseup", createNewTarget);
     
     targetGizmosID = setInterval("drawTargetGizmos()", 1000/globalParams.FPS);
 }
 
-function createNewBullet(e)
+function createNewTarget(e)
 {
     
     rx = canvas.width/canvas.offsetWidth; 
@@ -77,7 +77,7 @@ function createNewBullet(e)
     
     clearInterval(targetGizmosID);
 
-    canvas.removeEventListener("mouseup", createNewBullet);
+    canvas.removeEventListener("mouseup", createNewTarget);
     console.log(T.velocity)
 
 
@@ -137,16 +137,22 @@ function stopCanvas()
 
 function fireOnSchedule()
 {
-    let L = launcherList[0]
+    let L = launcherList[0];
     if(L.targetInactive){L.target = targetList[targetList.length - 1]}
-    L.Fire(omnidirectional = false)
+    L.Fire(omnidirectional = false);
+    
+        if(bulletList.length > 200)
+    {
+        bulletList.shift();
+    }
+
     
     
 }
 function updateCanvas()
 {
     globalParams.simulationSpeed = e_simSpeedSlider.value;
-    r = globalParams.simulationSpeed
+    r = globalParams.simulationSpeed;
     globalParams.gravity = -e_gravitySlider.value;
     applyPhysics();
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -201,7 +207,7 @@ function cleanup()
 {
     for(let i=0; i<bulletList.length; i++)
     {
-        e = bulletList[i]
+        e = bulletList[i];
         if(e.pos.x < 0 || e.pos.x > canvas.length || e.pos.y > canvas.height || e.pos.y < 0)
         {
             bulletList.splice(i, 1);
