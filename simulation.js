@@ -14,6 +14,7 @@ class Launcher extends GameObject
         this.launchVelocity = launchVelocity;
         this.target = target;
         this.ID = ID;
+        this.targetInactive = false;
     }
 
     TransformPoint(targetPos) // converts coords into local space
@@ -23,8 +24,14 @@ class Launcher extends GameObject
 
     Fire(omnidirectional = false)
     {
+        this.targetInactive = false;
         let Tlocal = this.TransformPoint(this.target.pos);
-        if(!omnidirectional && Tlocal.y <= 0) { return; }
+        if(!omnidirectional && Tlocal.y <= 0) 
+        { 
+            this.targetInactive = true; 
+            return; 
+        }
+
         let r = Tlocal.y/Tlocal.x;
         let a = (-r*this.target.velocity.x + this.target.velocity.y) / this.launchVelocity; //a = s-rc
         let cos = Tlocal.x > 0 ? (-a*r + Math.sqrt(r**2-a**2+1))/(r**2+1) : (-a*r - Math.sqrt(r**2-a**2+1))/(r**2+1)
@@ -58,7 +65,9 @@ var globalParams =
     FPS : 30,
     simulationSpeed: .5, // physics updates every simSpeed * FPS times per second
 
-    fireRate: 7 //debug only, per second
+    fireRate: 10, //debug only, per second/simulation rate
+
+    maximumTargets: 15 //max no. of targets, will destroy previous ones if over this limit
 }
 
 var launcherList = new Array();
@@ -67,8 +76,5 @@ var targetList = new Array();
 
 t = new Target({x:0, y:2000}, {x:30, y:10});
 l1 = new Launcher({x:0, y:100}, 100, t);
-l2 = new Launcher({x:500, y:100}, 100, t);
-l3 = new Launcher({x:1000, y:100}, 100, t);
-l4 = new Launcher({x:2000, y:100}, 100, t);
-launcherList.push(l1, l2, l3, l4);
+launcherList.push(l1);
 targetList.push(t)

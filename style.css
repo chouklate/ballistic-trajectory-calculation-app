@@ -1,26 +1,20 @@
-#tstart-simulation {
-    position:fixed; 
-    z-index:3; 
-}
-
-#tfg-overlay {
-    z-index:3
-}
-
-
-.canvas-class {
-    
-
-}
-
-
 #bg-canvas {
     margin: 0px;
     position: absolute;
     width:  inherit;
     height: inherit;
 
-    z-index: 2;
+    z-index: 0;
+    background-color: rgb(30,30,30);
+}
+
+#nb-canvas {
+    margin: 0px;
+    position: absolute;
+    width:  inherit;
+    height: inherit;
+
+    z-index: 1;
     background-color: rgb(30,30,30);
 }
 
