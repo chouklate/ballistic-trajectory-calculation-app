@@ -137,11 +137,14 @@ function stopCanvas()
 
 function fireOnSchedule()
 {
-    let L = launcherList[0];
-    if(L.targetInactive){L.target = targetList[targetList.length - 1]}
-    L.Fire(omnidirectional = false);
+    if(r > 0)
+    {
+        let L = launcherList[0];
+        if(L.targetInactive){L.target = targetList[targetList.length - 1]}
+        L.Fire(omnidirectional = false);
+    }
     
-        if(bulletList.length > 200)
+    if(bulletList.length > 200)
     {
         bulletList.shift();
     }
