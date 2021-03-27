@@ -1,5 +1,7 @@
 # ballistic-trajectory-simulation-app
 
+deployed at https://chouklate.github.io/ballistic-trajectory-simulation-app/
+
 Simulates a projectile targeting an object in freefall.
 
 controls:
