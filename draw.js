@@ -27,10 +27,12 @@ function afterImageLoad()
     e_gravitySlider = document.getElementById("gravity-slider");
     e_simSpeedSlider = document.getElementById("sim-speed-slider");
     e_toggleButton = document.getElementById("toggle-simulation");
-    
-    nbctx = nbcanvas.getContext("2d");
-    bgctx = bgcanvas.getContext("2d");
-    ctx = canvas.getContext("2d");
+    canvas.ctx = canvas.getContext("2d");
+    nbcanvas.ctx = nbcanvas.getContext("2d");
+    bgctx.ctx = bgcanvas.getContext("2d");
+    nbctx = nbcanvas.ctx
+    bgctx = bgcanvas.ctx
+    ctx = canvas.ctx
 
     
     rx = canvas.width/canvas.offsetWidth; 
