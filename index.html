@@ -7,16 +7,17 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
     
     <link rel="stylesheet" href="style.css">
-    <script src="simulation.js"></script>
-    <script src="draw.js"></script>
+    <script src="game.js"></script>
     <title>Ballistic Trajectory Simulator</title>
 </head>
+
+
 <body onload="initCanvas()">
     <div class="container-fluid bg-dark text-white">
         <div class="mb-2"> &nbsp;</div>
         <h1> Ballistic Trajectory Simulator</h1>
         <hr/>
-        <div class="mb-2 text-info">This project is currently under development. Not all functions may work properly. &nbsp;</div>
+        <div class="mb-2 text-info">This project is currently under development. Not all functions may not work properly. &nbsp;</div>
         <div class="row">
             <div class="col-sm-10">
                 <div id="canvas-parent"style="position:relative; display: block;height:85vh; width:100%;margin: 0px;">
@@ -37,7 +38,7 @@
                     </div>
                     <div class="col-sm-3">
                         Simulation Speed<br/>
-                        <input id="sim-speed-slider"  class="w-75"  type="range" min="0" max="2" step="0.1"/> 
+                        <input id="sim-speed-slider"  class="w-75"  type="range" min="0.1" max="2" step="0.1"/> 
                     </div>
                     <div class="col-sm-3"></div>
                     <div class="col-sm-2">
@@ -53,10 +54,9 @@
                         <input class="launch-velocity-change-slider w-75" type="range" min="20" max="200" step="10"/><br/>
                         <br/>
                         Data:<br/>
-                        placeholder<br/>
-                        placeholder<br/>
-                        placeholder<br/>
-                        placeholder<br/>
+                        <div id="launcher-data">
+
+                        </div>
                         </table>
                         <hr/>
                     </div>
@@ -88,3 +88,35 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
 </body>
 </html>
+
+<!--
+    [CONTROLS]
+    create new target
+        ENTRY: new target icon
+    create new launcher
+        ENTRY: new launcher icon
+        click: show V icon -> placement (unfocus-> disappear)
+        click on existing: show X icon -> remove (unfocus-> disappear)
+    
+    edit target
+        ENTRY: default
+        click-drag: change position
+            shift: set pos, now setting velocity
+    
+    [DISPLAY]
+    side: launcher data
+        launcher1 : 
+            *slider-velocity
+            output-velocity
+            
+            output-velocity-x
+            output-velocity-y
+
+            *slider-firerate
+            output-firerate
+
+            when click-> focus (highlight)
+
+        btn Add launcher
+
+-->
