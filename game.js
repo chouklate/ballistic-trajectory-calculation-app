@@ -1,17 +1,3 @@
-var globalParams =
-{
-    gravity: -1.2,
-    FPS : 30, //defines the amount of updates ({FPS} times) per second
-
-    simulationSpeed: .5, //defines the 'unit time' for physics calculations as 1 / {simulationSpeed} seconds
-
-    maximumTargets: 15, //defines the maximum number of targets drawn on the screen before they are deleted
-
-    fireRate: 10, //fires {fireRate} times per unit time
-
-}
-
-
 class Asset{ // class representing image assets
     constructor(src)
     {
@@ -31,15 +17,6 @@ class Asset{ // class representing image assets
     }
 }
 
-var assets =
-{
-    missile_launcher: new Asset("assets/missile_launcher.png"),
-    missile: new Asset("assets/missile.png"),
-    bullet_launcher: new Asset("assets/bullet_launcher.png"),
-    bullet: new Asset("assets/bullet.png"),
-    trace: new Asset("assets/trace.png")
-}
-
 
 
 class GameObject 
@@ -52,16 +29,17 @@ class GameObject
 }
 
 
-class BulletLauncher extends GameObject
+class RocketLauncher extends GameObject
 {
     constructor(pos, launchVelocity, target)
     {
-        super(pos, assets.bullet_launcher);
+        super(pos, assets.rocket_launcher);
         this.launchVelocity = launchVelocity;
         this.target = target;
         this.targetActive = true;
     }
 
+    lastLaunchAngle = 0;
     
     TransformPoint(targetPos) // converts coords into local space
     {
@@ -85,7 +63,7 @@ class BulletLauncher extends GameObject
         let cos = Tlocal.x > 0 ? (-a*r + Math.sqrt(r**2-a**2+1))/(r**2+1) : (-a*r - Math.sqrt(r**2-a**2+1))/(r**2+1)
         let sin = Tlocal.y > 0 ? (Math.sqrt(1-cos**2)) : -(Math.sqrt(1-cos**2))
 
-        activeObjects.bullet.push(new Bullet(Object.create(this.pos), {x: this.launchVelocity * cos, y: this.launchVelocity * sin}));
+        activeObjects.rocket.push(new Rocket(Object.create(this.pos), {x: this.launchVelocity * cos, y: this.launchVelocity * sin}));
         
         this.lastLaunchAngle = Math.acos(cos);
     }
@@ -106,7 +84,7 @@ class BulletLauncher extends GameObject
 }
 
 
-class Missile extends GameObject{
+class Target extends GameObject{
     constructor(pos, velocity = {x: 0, y: 0})
     {
         super(pos);
@@ -116,7 +94,7 @@ class Missile extends GameObject{
 
 };
 
-class Bullet extends GameObject{
+class Rocket extends GameObject{
     constructor(pos, velocity = {x: 0, y: 0})
     {
         super(pos);
@@ -124,13 +102,38 @@ class Bullet extends GameObject{
     }
 }
 
-var activeObjects = {
-    bulletLauncher: [new BulletLauncher({x:100, y:100}, 70, null)],
-    bullet: [],
-    missile: [new Missile({x:0, y:2000}, {x:30, y:10})]
+var globalParams =
+{
+    gravity: -1.2,
+    FPS : 30, //defines the amount of updates ({FPS} times) per second
+
+    simulationSpeed: .5, //defines the 'unit time' for physics calculations as 1 / {simulationSpeed} seconds
+
+    maximumTargets: 15, //defines the maximum number of targets drawn on the screen before they are deleted
+
+    fireRate: 10, //fires {fireRate} times per unit time
+
 }
 
-activeObjects.bulletLauncher[0].target = activeObjects.missile[0];
+
+
+var assets =
+{
+    target: new Asset("assets/missile.png"),
+    rocket_launcher: new Asset("assets/bullet_launcher.png"),
+    rocket: new Asset("assets/bullet.png"),
+    trace: new Asset("assets/trace.png")
+}
+
+
+
+var activeObjects = {
+    rocketLauncher: [new RocketLauncher({x:100, y:100}, 70, null)],
+    rocket: [],
+    target: [new Target({x:0, y:2000}, {x:30, y:10})]
+}
+
+activeObjects.rocketLauncher[0].target = activeObjects.target[0];
 
 var running = false;
 var createTargetMode = false;
@@ -199,8 +202,8 @@ function onImageLoad()
     
     nbcanvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
     bgcanvas.ctx.beginPath(); 
-    activeObjects.bulletLauncher.forEach(e => {
-        bgcanvas.ctx.drawImage(assets.bullet_launcher.img, e.pos.x - .5*assets.bullet_launcher.img.width, canvas.height-e.pos.y - .5*assets.bullet_launcher.img.height)
+    activeObjects.rocketLauncher.forEach(e => {
+        bgcanvas.ctx.drawImage(assets.rocket_launcher.img, e.pos.x - .5*assets.rocket_launcher.img.width, canvas.height-e.pos.y - .5*assets.rocket_launcher.img.height)
     });
 }
 
@@ -250,26 +253,26 @@ function update()
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 
-    ctx.beginPath(); // draw bullets
+    ctx.beginPath(); // draw rockets
 
-    activeObjects.bullet.forEach(e => {
+    activeObjects.rocket.forEach(e => {
         e.pos.x += e.velocity.x * r;
         e.pos.y += e.velocity.y * r;
         ctx.moveTo(e.pos.x, canvas.height - e.pos.y);
 
         
-        ctx.drawImage(assets.bullet.img, e.pos.x - .5*assets.bullet.img.width, canvas.height-e.pos.y - .5*assets.bullet.img.height);
+        ctx.drawImage(assets.rocket.img, e.pos.x - .5*assets.rocket.img.width, canvas.height-e.pos.y - .5*assets.rocket.img.height);
     });
 
     ctx.beginPath(); // draw target
 
-    activeObjects.missile.forEach(e => {
+    activeObjects.target.forEach(e => {
 
         e.pos.x += e.velocity.x * r;
         e.pos.y += e.velocity.y * r;
 
         
-        ctx.drawImage(assets.missile.img, e.pos.x -.5*assets.missile.img.width, canvas.height-e.pos.y -.5*assets.missile.img.height);
+        ctx.drawImage(assets.target.img, e.pos.x -.5*assets.target.img.width, canvas.height-e.pos.y -.5*assets.target.img.height);
         
 
     })
@@ -278,19 +281,19 @@ function update()
 
 function updateLauncherData() //currently designed for single output
 {
-    let a = activeObjects.bulletLauncher[0].lastLaunchAngle;
+    let a = activeObjects.rocketLauncher[0].lastLaunchAngle;
     if(a != null){e_launcherOutput.innerHTML = Math.round((a*(180/Math.PI) + Number.EPSILON) * 100) / 100;}
 }
 
 function applyPhysics()
 {
-    //update bullets
-    activeObjects.bullet.forEach(e => {
+    //update rockets
+    activeObjects.rocket.forEach(e => {
     e.velocity.y += globalParams.gravity * r;
     })
 
     //update targets
-    activeObjects.missile.forEach(e => {
+    activeObjects.target.forEach(e => {
         if(e.pos.y <= 0)
         {
             e.pos.y = 0;
@@ -307,12 +310,12 @@ function applyPhysics()
 
 function cleanup()
 {
-    for(let i=0; i<activeObjects.bullet.length; i++)
+    for(let i=0; i<activeObjects.rocket.length; i++)
     {
-        e = activeObjects.bullet[i];
+        e = activeObjects.rocket[i];
         if(e.pos.x < 0 || e.pos.x > canvas.length || e.pos.y > canvas.height || e.pos.y < 0)
         {
-            activeObjects.bullet.splice(i, 1);
+            activeObjects.rocket.splice(i, 1);
         }
         
     };
@@ -320,9 +323,9 @@ function cleanup()
     
 
     //remove targets if there are too many
-    if(activeObjects.missile.length > globalParams.maximumTargets)
+    if(activeObjects.target.length > globalParams.maximumTargets)
     {
-        activeObjects.missile.splice(0,activeObjects.missile.length - globalParams.maximumTargets);
+        activeObjects.target.splice(0,activeObjects.target.length - globalParams.maximumTargets);
     }
     
 
@@ -334,7 +337,7 @@ function cleanup()
 function onMouseClick()
 {
     createTargetMode = true;
-    nbcanvas.ctx.drawImage(assets.missile.img, lastMouseDownPos.x - .5*assets.missile.img.width, canvas.height - lastMouseDownPos.y - .5*assets.missile.img.height);
+    nbcanvas.ctx.drawImage(assets.target.img, lastMouseDownPos.x - .5*assets.target.img.width, canvas.height - lastMouseDownPos.y - .5*assets.target.img.height);
     canvas.addEventListener("mouseup", createNewTarget);
     
     targetTraceID = setInterval("drawTargetTrace()", 1000/globalParams.FPS);
@@ -343,12 +346,12 @@ function onMouseClick()
 function createNewTarget(e)
 {
     updateCanvasDimensions();
-    T = new Missile(JSON.parse(JSON.stringify(lastMouseDownPos)), {x: 0.05*(- e.offsetX*rx + lastMouseDownPos.x), y: 0.05*(-canvas.height + e.offsetY*ry + lastMouseDownPos.y)} );
-    activeObjects.missile.push(T);
+    T = new Target(JSON.parse(JSON.stringify(lastMouseDownPos)), {x: 0.05*(- e.offsetX*rx + lastMouseDownPos.x), y: 0.05*(-canvas.height + e.offsetY*ry + lastMouseDownPos.y)} );
+    activeObjects.target.push(T);
 
     createTargetMode = false;
     nbcanvas.ctx.clearRect(0, 0, nbcanvas.width, nbcanvas.height); //clear creator layer
-    canvas.ctx.drawImage(assets.missile.img, T.pos.x -.5*assets.missile.img.width, canvas.height-T.pos.y -.5*assets.missile.img.height);
+    canvas.ctx.drawImage(assets.target.img, T.pos.x -.5*assets.target.img.width, canvas.height-T.pos.y -.5*assets.target.img.height);
     
     clearInterval(targetTraceID);
 
@@ -360,7 +363,7 @@ function createNewTarget(e)
 function drawTargetTrace()
 {
     nbcanvas.ctx.clearRect(0, 0, nbcanvas.width, nbcanvas.height)
-    nbcanvas.ctx.drawImage(assets.missile.img, lastMouseDownPos.x - .5*assets.missile.img.width, canvas.height - lastMouseDownPos.y - .5*assets.missile.img.height);
+    nbcanvas.ctx.drawImage(assets.target.img, lastMouseDownPos.x - .5*assets.target.img.width, canvas.height - lastMouseDownPos.y - .5*assets.target.img.height);
     let newDotX = lastMouseDownPos.x;
     let newDotY = lastMouseDownPos.y;
     let lengthX = lastMouseDownPos.x - mousePos.x;
@@ -381,14 +384,14 @@ function fireOnSchedule()
 {
     if(r > 0)
     {
-        let L = activeObjects.bulletLauncher[0];
-        if(true){L.target = activeObjects.missile[activeObjects.missile.length - 1]}
+        let L = activeObjects.rocketLauncher[0];
+        if(true){L.target = activeObjects.target[activeObjects.target.length - 1]}
         L.RapidFire(omnidirectional = false);
     }
     
-    if(activeObjects.bullet.length > 200)
+    if(activeObjects.rocket.length > 200)
     {
-        activeObjects.bullet.shift();
+        activeObjects.rocket.shift();
     }
 
         if(running)
