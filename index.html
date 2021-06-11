@@ -15,9 +15,8 @@
 <body onload="initCanvas()">
     <div class="container-fluid bg-dark text-white">
         <div class="mb-2"> &nbsp;</div>
-        <h1> Ballistic Trajectory Simulator</h1>
+        <h1> Ballistic Trajectory Simulator / 포물선 운동 시뮬레이션</h1>
         <hr/>
-        <div class="mb-2 text-info">This project is currently under development. Not all functions may work properly. &nbsp;</div>
         <div class="row">
             <div class="col-sm-10">
                 <div id="canvas-parent"style="position:relative; display: block;height:85vh; width:100%;margin: 0px;">
@@ -49,38 +48,17 @@
             <div class="col-sm-2" style="position: relative;">
                 <div id="launcher-item" class="row">
                     <div class="col-sm-12">
-                        <h5 class="text-info">Launcher 1</h5>
-                        Launch velocity: 120m/s<br/>
-                        <input class="launch-velocity-change-slider w-75" type="range" min="20" max="200" step="10"/><br/>
-                        <br/>
-                        Data:<br/>
-                        <div id="launcher-data">
-
-                        </div>
+                        <h5 class="text-info">Launcher</h5>
+                        Launch velocity: <span id="launcher-velocity">70</span>&nbsp;m/s<br/>
+                        <input id="launch-velocity-change-slider" class= "w-75" type="range" min="20" max="150" step="10"/><br/>
+                        <br/>Launch Angle:<br/> <span id="launcher-data"></span>&deg;
                         </table>
                         <hr/>
+                        <h5 class="text-info">Controls / 조작법</h5><br/>
+                        Click-drag inside the black area to make a new target.<br/><br/>
+                        검정색 영역 안을 클릭-드래그해서 새 타겟을 생성하세요<br/>
                     </div>
                 </div>
-
-                <div id="launcher-item" class="row">
-                    <div class="col-sm-12">
-                        <h5 class="text-info">Launcher 2</h5>
-                        Launch velocity: 105m/s<br/>
-                        <input class="launch-velocity-change-slider w-75" type="range" min="0" max="2" step="0.1"/><br/>
-                        <br/>
-                        Data:<br/>
-                        placeholder<br/>
-                        placeholder<br/>
-                        placeholder<br/>
-                        placeholder<br/>
-                        </table>
-                        
-                    </div>
-                </div>
-                
-                <button style="position: absolute; bottom: 30px; right: 0; left: 0; width: 75%; margin-left: auto; margin-right: auto;" class="btn btn-primary" onclick="setLauncherCreateMode()">Create New</button>
-
-        
             </div>    
         </div>
         <a class="text-secondary" href="https://github.com/chouklate/ballistic-trajectory-calculation-app"><h6 class="ml-5"><small>Source Code</small></h6></a>
@@ -90,33 +68,6 @@
 </html>
 
 <!--
-    [CONTROLS]
-    create new target
-        ENTRY: new target icon
-    create new launcher
-        ENTRY: new launcher icon
-        click: show V icon -> placement (unfocus-> disappear)
-        click on existing: show X icon -> remove (unfocus-> disappear)
-    
-    edit target
-        ENTRY: default
-        click-drag: change position
-            shift: set pos, now setting velocity
-    
-    [DISPLAY]
-    side: launcher data
-        launcher1 : 
-            *slider-velocity
-            output-velocity
-            
-            output-velocity-x
-            output-velocity-y
-
-            *slider-firerate
-            output-firerate
-
-            when click-> focus (highlight)
-
-        btn Add launcher
-
+This project uses Bootstrap, which is licensed under the MIT license.
+https://github.com/twbs/bootstrap/blob/v4.0.0/LICENSE
 -->

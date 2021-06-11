@@ -11,7 +11,6 @@ class Asset{ // class representing image assets
         this.img = I;
         I.onload = () => {
             loadCounter--;
-            console.log(loadCounter);
             if(loadCounter === 0){onImageLoad()}
         }
     }
@@ -50,7 +49,7 @@ class RocketLauncher extends GameObject
     {
         this.targetActive = true;
         let Tlocal = this.TransformPoint(this.target.pos);
-        if(Tlocal.y <= 0)
+        if(this.target.pos.y <= 0)
         { 
             this.targetActive = false; 
             return; 
@@ -62,24 +61,11 @@ class RocketLauncher extends GameObject
         let a = (-r*this.target.velocity.x + this.target.velocity.y) / this.launchVelocity;
         let cos = Tlocal.x > 0 ? (-a*r + Math.sqrt(r**2-a**2+1))/(r**2+1) : (-a*r - Math.sqrt(r**2-a**2+1))/(r**2+1)
         let sin = Tlocal.y > 0 ? (Math.sqrt(1-cos**2)) : -(Math.sqrt(1-cos**2))
+        //let sin = -(Math.sqrt(1-cos**2))
 
         activeObjects.rocket.push(new Rocket(Object.create(this.pos), {x: this.launchVelocity * cos, y: this.launchVelocity * sin}));
         
         this.lastLaunchAngle = Math.acos(cos);
-    }
-
-    FocusedFire()
-    {
-        this.targetActive = true;
-        let Tlocal = this.TransformPoint(this.target.pos);
-        if(Tlocal.y <= 0)
-        { 
-            this.targetActive = false; 
-            return; 
-        }
-
-        //Physics calculations
-        //tba
     }
 }
 
@@ -170,14 +156,15 @@ function initCanvas()
 
 function onImageLoad()
 {
-    console.log("returned!");
     canvas = document.getElementById("main-canvas");
     nbcanvas = document.getElementById("nb-canvas");
     bgcanvas = document.getElementById("bg-canvas");
     e_gravitySlider = document.getElementById("gravity-slider");
     e_simSpeedSlider = document.getElementById("sim-speed-slider");
     e_toggleButton = document.getElementById("toggle-simulation");
+    e_launchVelocitySlider = document.getElementById("launch-velocity-change-slider");
     e_launcherOutput = document.getElementById("launcher-data");
+    e_launchVelocityOutput = document.getElementById("launcher-velocity");
 
     nbcanvas.ctx = nbcanvas.getContext("2d");
     bgcanvas.ctx = bgcanvas.getContext("2d");
@@ -281,8 +268,11 @@ function update()
 
 function updateLauncherData() //currently designed for single output
 {
-    let a = activeObjects.rocketLauncher[0].lastLaunchAngle;
+    let R = activeObjects.rocketLauncher[0];
+    let a = R.lastLaunchAngle;
     if(a != null){e_launcherOutput.innerHTML = Math.round((a*(180/Math.PI) + Number.EPSILON) * 100) / 100;}
+    R.launchVelocity = e_launchVelocitySlider.value;
+    e_launchVelocityOutput.innerHTML = e_launchVelocitySlider.value
 }
 
 function applyPhysics()
@@ -356,7 +346,7 @@ function createNewTarget(e)
     clearInterval(targetTraceID);
 
     canvas.removeEventListener("mouseup", createNewTarget);
-    console.log(T.velocity)
+
 
 }
 
@@ -386,7 +376,7 @@ function fireOnSchedule()
     {
         let L = activeObjects.rocketLauncher[0];
         if(true){L.target = activeObjects.target[activeObjects.target.length - 1]}
-        L.RapidFire(omnidirectional = false);
+        L.RapidFire();
     }
     
     if(activeObjects.rocket.length > 200)
