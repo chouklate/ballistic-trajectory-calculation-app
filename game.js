@@ -178,10 +178,7 @@ function onImageLoad()
         if(!createTargetMode) {onMouseClick();} 
     })
 
-        
-    document.addEventListener("mousemove", e=> {
-        mousePos = {x: e.offsetX*rx, y: (canvas.offsetHeight - e.offsetY)*ry};
-    });
+
 
     // draw background
     
@@ -326,13 +323,20 @@ function cleanup()
 
 function onMouseClick()
 {
+            
+    document.addEventListener("mousemove", onMouseMove);
+
     createTargetMode = true;
     nbcanvas.ctx.drawImage(assets.target.img, lastMouseDownPos.x - .5*assets.target.img.width, canvas.height - lastMouseDownPos.y - .5*assets.target.img.height);
-    canvas.addEventListener("mouseup", createNewTarget);
+    document.addEventListener("mouseup", createNewTarget);
     
     targetTraceID = setInterval("drawTargetTrace()", 1000/globalParams.FPS);
 }
 
+function onMouseMove(e){
+    e.preventDefault();
+    mousePos = {x: e.offsetX*rx, y: (canvas.offsetHeight - e.offsetY)*ry};
+}
 function createNewTarget(e)
 {
     updateCanvasDimensions();
@@ -345,7 +349,8 @@ function createNewTarget(e)
     
     clearInterval(targetTraceID);
 
-    canvas.removeEventListener("mouseup", createNewTarget);
+    document.removeEventListener("mouseup", createNewTarget);
+    document.removeEventListener("mousemove", onMouseMove);
 
 
 }
