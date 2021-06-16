@@ -175,7 +175,7 @@ function onImageLoad()
     canvas.addEventListener("mousedown", e => {
         updateCanvasDimensions();
         lastMouseDownPos = {x: e.offsetX*rx, y: (canvas.offsetHeight - e.offsetY)*ry};
-        if(!createTargetMode) {onMouseClick();} 
+if(!createTargetMode) {onMouseClick();} 
     })
 
 
@@ -325,7 +325,7 @@ function onMouseClick()
 {
             
     document.addEventListener("mousemove", onMouseMove);
-
+    mousePos = {x: e.offsetX*rx, y: (canvas.offsetHeight - e.offsetY)*ry};
     createTargetMode = true;
     nbcanvas.ctx.drawImage(assets.target.img, lastMouseDownPos.x - .5*assets.target.img.width, canvas.height - lastMouseDownPos.y - .5*assets.target.img.height);
     document.addEventListener("mouseup", createNewTarget);
@@ -358,6 +358,9 @@ function createNewTarget(e)
 function drawTargetTrace()
 {
     nbcanvas.ctx.clearRect(0, 0, nbcanvas.width, nbcanvas.height)
+	        console.log("call2");    
+	        console.log(lastMouseDownPos); 
+   	        console.log(mousePos); 
     nbcanvas.ctx.drawImage(assets.target.img, lastMouseDownPos.x - .5*assets.target.img.width, canvas.height - lastMouseDownPos.y - .5*assets.target.img.height);
     let newDotX = lastMouseDownPos.x;
     let newDotY = lastMouseDownPos.y;
